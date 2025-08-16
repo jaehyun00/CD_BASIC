@@ -1,0 +1,3 @@
+printchar = 'Hello'
+
+print(printchar)
