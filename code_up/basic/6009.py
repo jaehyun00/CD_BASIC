@@ -1,0 +1,2 @@
+cInput = input()
+print(cInput)
