@@ -31,6 +31,8 @@
 # -------------------------------------------------------------------
 # 개인 풀이
 # -------------------------------------------------------------------
+from collections import deque
+
 n, m = map(int, input().split())
 
 graph = []
@@ -43,47 +45,57 @@ for _ in range(n):
 dv = (-1, 1, 0, 0)
 dh = (0, 0, -1, 1)
 
-v = h = 0
-
 visited = set()
 
 def bfs(v, h):
-    # 갈 수 있는 범위 제한
-    if v - 1 < 0 or v + 1 > n or h - 1 < 0 or h + 1 > m:
-        return
-    
-    nv = 0
-    nh = 0
+    print(f"파라미터 확인: v: {v} h: {h}")
+    v -= 1
+    h -= 1
+
+    dq = deque()
 
     for d in range(4):
         nv = v + dv[d]
         nh = h + dh[d]
 
+        print(f"다음 위치: nv: {nv} nh: {nh}")
+
+        if nv < 0 or nv > n or nh < 0 or nh > m:
+            continue
+
+        # 이쪽이 에러
         if graph[nv][nh] == 1 and (nv,nh) not in visited:
-            visited.add((nv,nh))
+            dq.append((nv,nh))
 
-            v = nv
-            h = nh
+    while dq:
+        tv, th = dq.popleft()
 
-            print(f"v: {v + 1} h: {h + 1}", end=' ')
+        print(f"loop dq: tv: {tv} th: {th}")
 
-            if n + 1 == n and h + 1 == m:
-                return
+        if tv >= v:
+            v = tv
+        
+        if th > h:
+            h = th
 
-            bfs(nv,nh)
-    
-bfs(0,0)
+    print(f"visited: v: {v} h: {h}")
 
-print(v + 1, h + 1)
+    visited.add((v, h))
+
+    if v + 1 == n and h + 1 == m:
+        return
+
+    bfs(v + 1, h + 1)
+
+bfs(1, 1)
+
+print(len(visited))
 
 
 # -------------------------------------------------------------------
 # 책 답변 5-11
 # -------------------------------------------------------------------
-# N, M을 공백으로 구분하여 입력받기
 
-
-# 2차원 리스트의 맵 정보 받기
 
 # -------------------------------------------------------------------
 # 오답노트
