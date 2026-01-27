@@ -33,71 +33,104 @@
 # -------------------------------------------------------------------
 from collections import deque
 
-n, m = map(int, input().split())
+# n, m = map(int, input().split())
 
-graph = []
+# graph = []
 
-for _ in range(n):
-    graph.append(list(map(int, input())))
+# for _ in range(n):
+#     graph.append(list(map(int, input())))
 
-# 이동 가능 방향
-# 방향: 상 하 좌 우  
-dv = (-1, 1, 0, 0)
-dh = (0, 0, -1, 1)
+# # 이동 가능 방향
+# # 방향: 상 하 좌 우  
+# dv = (-1, 1, 0, 0)
+# dh = (0, 0, -1, 1)
 
-visited = set()
+# visited = set()
 
-def bfs(v, h):
-    print(f"파라미터 확인: v: {v} h: {h}")
-    v -= 1
-    h -= 1
+# def bfs(v, h):
+#     v -= 1
+#     h -= 1
 
-    dq = deque()
+#     dq = deque()
 
-    for d in range(4):
-        nv = v + dv[d]
-        nh = h + dh[d]
-
-        print(f"다음 위치: nv: {nv} nh: {nh}")
-
-        if nv < 0 or nv > n or nh < 0 or nh > m:
-            continue
-
-        # 이쪽이 에러
-        if graph[nv][nh] == 1 and (nv,nh) not in visited:
-            dq.append((nv,nh))
-
-    while dq:
-        tv, th = dq.popleft()
-
-        print(f"loop dq: tv: {tv} th: {th}")
-
-        if tv >= v:
-            v = tv
+#     if graph[v][h] == 1 and (v, h) not in visited:
+#         visited.add((v, h))
         
-        if th > h:
-            h = th
+#         if v == n - 1 and h == m - 1:
+#             return
 
-    print(f"visited: v: {v} h: {h}")
+#     for d in range(4):
+#         nv = v + dv[d]
+#         nh = h + dh[d]
 
-    visited.add((v, h))
+#         if nv < 0 or nv > n - 1 or nh < 0 or nh > m - 1:
+#             continue
 
-    if v + 1 == n and h + 1 == m:
-        return
+#         if graph[nv][nh] == 1:
+#             dq.append((nv,nh))
 
-    bfs(v + 1, h + 1)
+#     while dq:
+#         tv, th = dq.popleft()
 
-bfs(1, 1)
+#         if tv >= v:
+#             v = tv
+        
+#         if th >= h:
+#             h = th
 
-print(len(visited))
+#     bfs(v + 1, h + 1)
+
+# bfs(1, 1)
+
+# print(len(visited))
 
 
 # -------------------------------------------------------------------
 # 책 답변 5-11
 # -------------------------------------------------------------------
+# N, M을 공백으로 구분하여 입력받기
+n, m = map(int, input().split())
+# 2차원 리스트의 맵 정보 받기
+graph = []
+for i in range(n):
+    graph.append(list(map(int, input())))
 
+# 이동할 네 방향 정의(상, 하, 좌, 우)
+dx = [-1, 1, 0, 0]
+dy = [0, 0, -1, 1]
+
+# BFS 소스코드 구현
+def bfs(x, y):
+    # 큐(Queue) 구현을 위해 deque 라이브러리 사용
+    queue = deque()
+    queue.append((x, y))
+    # 큐가 빌 때까지 반복
+    while queue:
+        x, y = queue.popleft()
+        print(f"x: {x}, y: {y}")
+        # 현재 위치에서 네 방향으로 위치 확인
+        for i in range(4):
+            nx = x + dx[i]
+            ny = y + dy[i]
+            # 미로 찾기 공간을 벗어난 경우 무시
+            if nx < 0 or ny < 0 or nx >= n or ny >= m:
+                continue
+            # 벽인 경우 무시
+            if graph[nx][ny] == 0:
+                continue
+            # 해당 노드를 처음 방문하는 경우에만 최단 거리 기록
+            if graph[nx][ny] == 1:
+                graph[nx][ny] = graph[x][y] + 1
+                print(f"graph[x][y] + 1: {graph[x][y] + 1}")
+                queue.append((nx, ny))
+    # 가장 오른쪽 아래까지의 최단 거리 반환
+    return graph[n - 1][m - 1]
+
+# BFS를 수행한 결과 출력
+print(bfs(0, 0))
 
 # -------------------------------------------------------------------
 # 오답노트
 # -------------------------------------------------------------------
-
+# 답변 풀이 이해 못함
+# 꼭 다시 볼것
