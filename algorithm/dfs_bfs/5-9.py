@@ -1,49 +1,28 @@
-from collections import deque
-# BFS 예제 풀어보기
+# 이진 탐색 소스코드 구현(재귀 함수)
+def binary_search(array, target, start, end):
+    if start > end:
+        return None
 
-# -------------------------------------------------------------------
-# 개인 풀이
-# -------------------------------------------------------------------
-graph = [
-    [],
-    [2,3,8],
-    [1,7],
-    [1,4,5],
-    [3,5],
-    [3,4],
-    [7],
-    [2,6,8],
-    [1,7]
-]
+    mid = (start + end) // 2
 
-# BSF 구현 해보기
-def bfs (graph, start, visited):
-    # 시작 노드로 큐 초기화
-    dq = deque([start])
+    # 찾은 경우 중간점 인덱스 반환
+    if array[mid] == target:
+        return mid
+    # 중간점의 값보다 찾고자 하는 값이 작은 경우 왼쪽 확인
+    elif array[mid] > target:
+        return binary_search(array, target, start, mid - 1)
+    # 중간점의 값보다 찾고자 하는 값이 큰 경우 오른쪽 확인
+    else:
+        return binary_search(array, target, mid + 1, end)
+    
+# n(원소의 개수)과 target(찾고자 하는 문자열)을 입력받기
+n, target = list(map(int, input().split()))
+# 전체 원소 입력 받기
+array = list(map(int, input().split()))
 
-    # 현재 노드 방문
-    visited[start] = True
-
-    # 큐가 빌 때까지 반복
-    while dq:
-        # 큐에서 하나의 원소를 뽑아 출력
-        v = dq.popleft()
-        print(v, end=' ')
-
-        # 해당 원소와 연결된, 아직 방문하지 않은 원소들을 큐에 삽입
-        for g in graph[v]:
-            if not visited[g]:
-                dq.append(g)
-                visited[g] = True
-
-visited = [False] * 9
-
-bfs(graph, 1, visited)
-
-# -------------------------------------------------------------------
-# 책 답변 5-9
-# -------------------------------------------------------------------
-
-# -------------------------------------------------------------------
-# 오답노트
-# -------------------------------------------------------------------
+# 이진 탐색 수행 결과 출력
+result = binary_search(array, target, 0, n - 1)
+if result == None:
+    print("원소가 존재하지 않습니다.")
+else:
+    print(result + 1)
