@@ -18,7 +18,7 @@ distance = [INF] * (n + 1)
 
 # 모든 간선 정보를 입력받기
 for _ in range(m):
-    a, b, c = map(int, input.split())
+    a, b, c = map(int, input().split())
     # a번 노드에서 b번 노드로 가는 비용이 c라는 의미
     graph[a].append((b, c))
 
